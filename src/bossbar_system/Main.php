@@ -16,12 +16,6 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
 
-    public function onJoin(PlayerJoinEvent $event) {
-        $player = $event->getPlayer();
-        $bossbar = new BossBar("Hello!", 50);
-        $bossbar->send($player);
-    }
-
     public function onQuit(PlayerQuitEvent $event) {
         $player = $event->getPlayer();
         $bossBar = BossBar::get($player);
