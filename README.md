@@ -7,7 +7,7 @@ use bossbar_system\models\BossBar;
 
 init
 ```php
-$bossbar = new BossBar("Hello!", 50);
+$bossbar = new BossBar("Hello!", 1.0);
 ```
 
 get
