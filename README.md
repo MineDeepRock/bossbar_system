@@ -1,5 +1,10 @@
 # BossBarSystem
 
+use文
+```php
+use bossbar_system\models\BossBar;
+```
+
 init
 ```php
 $bossbar = new BossBar("Hello!", 50);
