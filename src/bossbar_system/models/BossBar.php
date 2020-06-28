@@ -40,7 +40,7 @@ class BossBar
 
         $addActorPacket = new AddActorPacket();
         $addActorPacket->entityRuntimeId = $this->id;
-        $addActorPacket->type = AddActorPacket::LEGACY_ID_MAP_BC[EntityIds::SLIME];
+        $addActorPacket->type = "minecraft:slime";
         $addActorPacket->position = $player->getPosition();
         $addActorPacket->metadata = [
             Entity::DATA_LEAD_HOLDER_EID => [Entity::DATA_TYPE_LONG, -1],
