@@ -23,7 +23,7 @@ class UpdateBossBarTitlePMMPService
         $bossEventPacket = new BossEventPacket();
         $bossEventPacket->bossEid = $bossBar->getId();
         $bossEventPacket->eventType = BossEventPacket::TYPE_TITLE;
-        $bossEventPacket->title = $bossBar->getId();
+        $bossEventPacket->title = $title;
         $bossEventPacket->unknownShort = 0;
         $bossEventPacket->color = 0;
         $bossEventPacket->overlay = 0;
