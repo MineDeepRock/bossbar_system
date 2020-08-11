@@ -16,12 +16,12 @@ class UpdateBossBarTitlePMMPService
 
         $setActorPacket = new SetActorDataPacket();
         $setActorPacket->metadata = [Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING, $title]];
-        $setActorPacket->entityRuntimeId = $bossBar->getId();
+        $setActorPacket->entityRuntimeId = $bossBar->getId()->getValue();
 
         $player->dataPacket($setActorPacket);
 
         $bossEventPacket = new BossEventPacket();
-        $bossEventPacket->bossEid = $bossBar->getId();
+        $bossEventPacket->bossEid = $bossBar->getId()->getValue();
         $bossEventPacket->eventType = BossEventPacket::TYPE_TITLE;
         $bossEventPacket->title = $title;
         $bossEventPacket->unknownShort = 0;

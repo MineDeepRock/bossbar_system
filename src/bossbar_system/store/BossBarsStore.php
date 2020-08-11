@@ -4,13 +4,14 @@ namespace bossbar_system\store;
 
 
 use bossbar_system\BossBar;
+use bossbar_system\model\BossBarId;
+use bossbar_system\model\BossBarType;
 use pocketmine\Player;
 
 class BossBarsStore
 {
     /**
      * @var BossBar[]
-     * name => bossBar
      */
     static private $bossBars = [];
 
@@ -18,28 +19,62 @@ class BossBarsStore
         return self::$bossBars;
     }
 
-    static function get(Player $player): ?BossBar {
-        foreach (self::$bossBars as $name => $bossBar) {
-            if ($name === $player->getName()) return $bossBar;
+    /**
+     * @param Player $player
+     * @return BossBar[]
+     */
+    static function getBelongings(Player $player): array {
+        $result = [];
+        foreach (self::$bossBars as $bossBar) {
+            if ($bossBar->getOwner()->getName() === $player->getName()) {
+                $result[] = $bossBar;
+            }
+        }
+
+        return $result;
+    }
+
+    static function findById(BossBarId $id): ?BossBar {
+        foreach (self::$bossBars as $bossBar) {
+            if ($bossBar->getId()->equals($id)) return $bossBar;
         }
 
         return null;
     }
 
-    static function add(Player $player, BossBar $bossBar): void {
-        self::$bossBars[$player->getName()] = $bossBar;
-    }
+    static function findByType(Player $player, BossBarType $type): ?BossBar {
 
-    static function remove(Player $player): void {
-        foreach (self::$bossBars as $name => $bossBar) {
-            if ($name === $player->getName()) {
-                unset(self::$bossBars[$name]);
+        foreach (self::$bossBars as $bossBar) {
+            if ($bossBar->getType()->equals($type) && $bossBar->getOwner()->getName() === $player->getName()) {
+                return $bossBar;
             }
         }
+
+        return null;
     }
 
-    static function update(Player $player, BossBar $bossBar): void {
-        self::remove($player);
-        self::add($player, $bossBar);
+    static function add(BossBar $bossBar): void {
+        if (self::findById($bossBar->getId()) !== null) {
+            throw new \LogicException("{$bossBar->getId()->getValue()}はすでに存在します");
+        }
+
+        if (self::findByType($bossBar->getOwner(), $bossBar->getType()) !== null) {
+            throw new \LogicException("ownerおよびtypeが等しいボスバーがすでに存在します");
+        }
+
+        self::$bossBars[] = $bossBar;
+    }
+
+    static function remove(BossBarId $id): void {
+        foreach (self::$bossBars as $index => $bossBar) {
+            if ($bossBar->getId()->equals($id)) unset(self::$bossBars[$index]);
+        }
+
+        self::$bossBars = array_values(self::$bossBars);
+    }
+
+    static function update(BossBar $bossBar): void {
+        self::remove($bossBar->getId());
+        self::add($bossBar);
     }
 }

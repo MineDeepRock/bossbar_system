@@ -2,21 +2,30 @@
 
 namespace bossbar_system;
 
+use bossbar_system\model\BossBarId;
+use bossbar_system\model\BossBarType;
 use bossbar_system\pmmp\service\AddBossBarPMMPService;
 use bossbar_system\pmmp\service\RemoveBossBarService;
 use bossbar_system\pmmp\service\UpdateBossBarLocationPMMPService;
 use bossbar_system\pmmp\service\UpdateBossBarPercentagePMMPService;
 use bossbar_system\pmmp\service\UpdateBossBarTitlePMMPService;
 use bossbar_system\store\BossBarsStore;
-use pocketmine\entity\Entity;
 use pocketmine\Player;
 
 class BossBar
 {
     /**
-     * @var int
+     * @var Player
+     */
+    private $owner;
+    /**
+     * @var BossBarId
      */
     private $id;
+    /**
+     * @var BossBarType
+     */
+    private $type;
     /**
      * @var string
      */
@@ -26,54 +35,65 @@ class BossBar
      */
     private $percentage;
 
-    public function __construct(string $title, float $percentage) {
-        $this->id = Entity::$entityCount++;
+    public function __construct(Player $player, BossBarType $type, string $title, float $percentage) {
+        $this->owner = $player;
+        $this->type = $type;
+        $this->id = BossBarId::asNew();
+
         $this->title = $title;
         $this->percentage = $percentage;
     }
 
-    public function send(Player $player): void {
-        BossBarsStore::add($player, $this);
+    public function send(): void {
+        BossBarsStore::add($this);
 
         //PMMP上での追加
-        AddBossBarPMMPService::execute($player, $this);
+        AddBossBarPMMPService::execute($this->owner, $this);
     }
 
-    public function remove(Player $player) {
-        BossBarsStore::remove($player);
+    public function remove() {
+        BossBarsStore::remove($this->getId());
 
         //PMMP上での削除
-        RemoveBossBarService::execute($player, $this->id);
+        RemoveBossBarService::execute($this->owner, $this->id);
     }
 
-    public function updatePercentage(Player $player, float $percentage) {
+    public function updatePercentage(float $percentage) {
         $this->percentage = $percentage;
-        BossBarsStore::update($player, $this);
+        BossBarsStore::update($this);
 
         //PMMP上での更新
-        UpdateBossBarPercentagePMMPService::execute($player, $this, $percentage);
+        UpdateBossBarPercentagePMMPService::execute($this->owner, $this, $percentage);
     }
 
-    public function updateTitle(Player $player, string $title) {
+    public function updateTitle(string $title) {
         $this->title = $title;
-        BossBarsStore::update($player, $this);
+        BossBarsStore::update($this);
 
         //PMMP上での更新
-        UpdateBossBarTitlePMMPService::execute($player, $this, $title);
+        UpdateBossBarTitlePMMPService::execute($this->owner, $this, $title);
     }
 
     public function updateLocationInformation(Player $player) {
         UpdateBossBarLocationPMMPService::execute($player, $this->id);
     }
 
-    static function get(Player $player): ?BossBar {
-        return BossBarsStore::get($player);
+    static function findById(BossBarId $bossBarId): ?BossBar {
+        return BossBarsStore::findById($bossBarId);
+    }
+
+    static function getBelongings(Player $player): array {
+        return BossBarsStore::getBelongings($player);
+    }
+
+    static function findByType(Player $player, BossBarType $type): ?BossBar {
+        return BossBarsStore::findByType($player, $type);
     }
 
     /**
-     * @return int
+     * @return BossBarId
      */
-    public function getId(): int {
+    public function getId(): BossBarId {
         return $this->id;
     }
 
@@ -89,5 +109,19 @@ class BossBar
      */
     public function getPercentage(): float {
         return $this->percentage;
+    }
+
+    /**
+     * @return Player
+     */
+    public function getOwner(): Player {
+        return $this->owner;
+    }
+
+    /**
+     * @return BossBarType
+     */
+    public function getType(): BossBarType {
+        return $this->type;
     }
 }

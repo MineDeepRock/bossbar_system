@@ -24,11 +24,11 @@ class UpdateBossBarPercentagePMMPService
         $attribute->setValue(1000 * $percentage);
         $upk = new UpdateAttributesPacket();
         $upk->entries = [$attribute];
-        $upk->entityRuntimeId = $bossBar->getId();
+        $upk->entityRuntimeId = $bossBar->getId()->getValue();
         $player->dataPacket($upk);
 
         $bossEventPacket = new BossEventPacket();
-        $bossEventPacket->bossEid = $bossBar->getId();
+        $bossEventPacket->bossEid = $bossBar->getId()->getValue();
         $bossEventPacket->eventType = BossEventPacket::TYPE_HEALTH_PERCENT;
         $bossEventPacket->healthPercent = $percentage;
         $bossEventPacket->unknownShort = 0;

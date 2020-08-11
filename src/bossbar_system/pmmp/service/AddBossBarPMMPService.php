@@ -13,7 +13,7 @@ class AddBossBarPMMPService
     static function execute(Player $player, BossBar $bossBar): void {
 
         $addActorPacket = new AddActorPacket();
-        $addActorPacket->entityRuntimeId = $bossBar->getId();
+        $addActorPacket->entityRuntimeId = $bossBar->getId()->getValue();
         $addActorPacket->type = "minecraft:slime";
         $addActorPacket->position = $player->getPosition();
         $addActorPacket->metadata = [
@@ -27,7 +27,7 @@ class AddBossBarPMMPService
         $player->dataPacket($addActorPacket);
 
         $bossEventPacket = new BossEventPacket();
-        $bossEventPacket->bossEid = $bossBar->getId();
+        $bossEventPacket->bossEid = $bossBar->getId()->getValue();
         $bossEventPacket->eventType = BossEventPacket::TYPE_SHOW;
         $bossEventPacket->title = $bossBar->getTitle();
         $bossEventPacket->healthPercent = $bossBar->getPercentage();
