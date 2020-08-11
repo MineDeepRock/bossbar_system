@@ -3,7 +3,7 @@
 namespace bossbar_system\store;
 
 
-use bossbar_system\models\BossBar;
+use bossbar_system\BossBar;
 use pocketmine\Player;
 
 class BossBarsStore
@@ -36,6 +36,8 @@ class BossBarsStore
                 unset(self::$bossBars[$name]);
             }
         }
+
+        self::$bossBars = array_values(self::$bossBars);
     }
 
     static function update(Player $player, BossBar $bossBar): void {

@@ -2,10 +2,9 @@
 
 namespace bossbar_system;
 
-use bossbar_system\models\BossBar;
+use bossbar_system\BossBar;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
