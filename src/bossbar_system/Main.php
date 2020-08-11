@@ -17,15 +17,19 @@ class Main extends PluginBase implements Listener
 
     public function onQuit(PlayerQuitEvent $event) {
         $player = $event->getPlayer();
-        $bossBar = BossBar::get($player);
-        if ($bossBar !== null) $bossBar->remove($player);
+        $bossBars = BossBar::getBelongings($player);
+        foreach ($bossBars as $bossBar) {
+            $bossBar->remove();
+        }
     }
 
     public function onTeleport(EntityTeleportEvent $event) {
         $player = $event->getEntity();
         if ($player instanceof Player) {
-            $bossBar = BossBar::get($player);
-            if ($bossBar !== null) $bossBar->updateLocationInformation($player);
+            $bossBars = BossBar::getBelongings($player);
+            foreach ($bossBars as $bossBar) {
+                $bossBar->updateLocationInformation($player);
+            }
         }
     }
 }

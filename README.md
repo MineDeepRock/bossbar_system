@@ -1,5 +1,9 @@
 # BossBarSystem
+BossBarには `ID`と`TYPE` の２つがあります。
+`ID`は一つ一つが固有なものです。ユーザーが指定することはありません。
 
+`TYPE`は複数のボスバーが同じ値を持つことができますが、一つのプレイヤーが同じ`TYPE`のボスバーを持つことはできません。  
+ユーザー自身が指定します。(BossBarTypesなどのクラスを作って管理するといいと思います)
 
 ### 生成
 ```php
@@ -20,11 +24,6 @@ $bossbar->send();
 ```
 
 ### 取得
-BossBarには `ID`と`TYPE` の２つがあります。
-`ID`は一つ一つが固有なものです。ユーザーが指定することはありません。
-
-`TYPE`は複数のボスバーが同じ値を持つことができますが、一つのプレイヤーが同じ`TYPE`のボスバーを持つことはできません。  
-ユーザー自身が指定します。(BossBarTypesなどのクラスを作って管理するといいと思います)
 ```php
 use bossbar_system\BossBar;
 use bossbar_system\model\BossBarType;

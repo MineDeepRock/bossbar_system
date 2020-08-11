@@ -82,6 +82,10 @@ class BossBar
         return BossBarsStore::findById($bossBarId);
     }
 
+    /**
+     * @param Player $player
+     * @return BossBar[]
+     */
     static function getBelongings(Player $player): array {
         return BossBarsStore::getBelongings($player);
     }
