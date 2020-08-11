@@ -36,8 +36,6 @@ class BossBarsStore
                 unset(self::$bossBars[$name]);
             }
         }
-
-        self::$bossBars = array_values(self::$bossBars);
     }
 
     static function update(Player $player, BossBar $bossBar): void {
