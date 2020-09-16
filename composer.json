@@ -1,8 +1,11 @@
 {
-  "name": "suinua/bossbar_system",
+  "name": "mine_deep_rock/bossbar_system",
   "authors": [
     {
       "name": "suinua"
+    },
+    {
+      "name": "ribnil"
     }
   ],
   "autoload": {
