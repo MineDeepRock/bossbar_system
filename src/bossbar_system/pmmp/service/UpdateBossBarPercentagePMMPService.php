@@ -16,7 +16,7 @@ class UpdateBossBarPercentagePMMPService
     static function execute(Player $player, BossBar $bossBar, float $percentage): void {
         //$percentage = $percentage <= 0 ? 0.001 : $percentage;
         if ($percentage <= 0 || 1 < $percentage) {
-            throw new LogicException("percentage must be 0.0 to 1.0");
+            throw new LogicException("percentage can't be 0.0 and over 1.0\n if percentage is 0, the bossbar disappear.\n as to over 1.0, needless to say");
         }
 
         $attribute = Attribute::getAttribute(Attribute::HEALTH);
